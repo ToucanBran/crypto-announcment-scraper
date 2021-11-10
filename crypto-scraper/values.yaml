@@ -1,0 +1,23 @@
+volumes:
+  logs:
+    path: /run/desktop/mnt/host/b/
+
+logging:
+  logLevel: DEBUG
+
+queue:
+  host: rabbitmq.default.svc.cluster.local
+  port: 5672
+  vhost: CHANGE
+  user: CHANGE
+  password: CHANGE
+
+scrapers:
+  binance:
+    repository: bgomez89/binance-scraper
+    tag: latest
+    schedule: "*/1 * * * *"
+    configs:
+      queue:
+        name: new-coins
+

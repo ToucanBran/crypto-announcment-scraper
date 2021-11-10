@@ -1,0 +1,76 @@
+image: python:3.10-buster
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+stages:
+  - install-packages
+  - lint
+  - test
+  - docker-build
+  - package
+  - deploy
+
+.python:
+  image: python:3.10-buster
+  cache:
+    policy: pull
+    untracked: true
+    key: $CI_COMMIT_REF_SLUG-pip
+    paths:
+      - ./cache/pip
+      - venv/
+  before_script:
+    - pip install virtualenv
+    - virtualenv venv
+    - source venv/bin/activate
+
+.helm:
+  image: alpine/helm:3.5.2
+
+install-pkgs:
+  extends: .python
+  stage: install-packages
+  cache:
+    policy: pull-push
+  script:
+    - 'pip install -r requirements.txt'
+
+lint-app:
+  extends: .python
+  stage: lint
+  script:
+    - 'find . -not \( -path ./venv -prune... ./docker'
+
+unit-test:
+  extends: .python
+  stage: test
+  script:
+    - 'pytest -k _unit'
+
+# package-charts:
+#   extends: .helm
+#   stage: package
+#   before_script:
+#     - 'mkdir packages'
+#   script:
+#     - 'helm package crypto-bot --app-version $CI_COMMIT_SHORT_SHA -d packages'
+#   artifacts:
+#     paths:
+#       - "packages/*.tgz"
+
+.deploy-docker-image:
+  tags:
+    - docker
+  before_script:
+    - 'echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USERNAME --password-stdin'
+  script:
+    - 'image_name=$REGISTRY$ENV:$CI_COMMIT_SHORT_SHA'
+    - 'docker build -t $image_name .'
+    - 'docker push $image_name'
+
+deploy-prod-docker:
+  extends: .deploy-docker-image
+  stage: docker-build
+  only:
+    - master

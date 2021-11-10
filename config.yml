@@ -1,0 +1,8 @@
+---
+  queue:
+    name: new-coins
+    host: localhost
+    port: 30001
+    vhost: gateio
+    user: main
+    password: pass1

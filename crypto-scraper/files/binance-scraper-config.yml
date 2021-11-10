@@ -1,0 +1,9 @@
+{{- with .Values -}}
+queue:
+  name: {{ .scrapers.binance.configs.queue.name }}
+  host: {{ .queue.host }}
+  port: {{ .queue.port }}
+  vhost: {{ .queue.vhost }}
+  user: {{ .queue.user }}
+  password: {{ .queue.password }}
+{{- end }}

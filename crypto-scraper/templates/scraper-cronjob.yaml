@@ -1,0 +1,35 @@
+{{- range $scraper, $scraperValues := .Values.scrapers }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: "{{ $scraper }}-scraper"
+  labels: 
+    component: scraper
+spec:
+  schedule: "{{$scraperValues.schedule}}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - image: "{{ $scraperValues.repository }}:{{ $scraperValues.tag }}"
+              name: {{ $scraper}}
+              imagePullPolicy: IfNotPresent
+              env:
+              - name: LOG_LEVEL
+                value: {{ $.Values.logging.logLevel }}
+              volumeMounts:
+              - name: {{$scraper}}-scraper-secret
+                mountPath: /home/debian/app/config.yml
+                subPath: config.yml
+              - name: logs
+                mountPath: /home/debian/app/logs
+          volumes:
+          - name: {{$scraper}}-scraper-secret
+            secret:
+              secretName: {{$scraper}}-scraper-secret
+          - name: logs
+            persistentVolumeClaim:
+              claimName: logging-pv-claim
+          restartPolicy: OnFailure
+{{- end }}
