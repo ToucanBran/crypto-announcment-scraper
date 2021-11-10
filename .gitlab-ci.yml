@@ -40,7 +40,7 @@ lint-app:
   extends: .python
   stage: lint
   script:
-    - 'find . -not \( -path ./venv -prune... ./docker'
+    - 'find . -type f -not -path "./venv/*" -name "*.py" | xargs pylint'
 
 unit-test:
   extends: .python
