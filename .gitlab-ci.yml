@@ -69,6 +69,16 @@ unit-test:
     - 'docker build -t $image_name .'
     - 'docker push $image_name'
 
+deploy-dev-docker:
+  extends: .deploy-docker-image
+  variables:
+    REGISTRY: bgomez89/cryptoscraperdev
+  rules:
+    - when: manual
+      allow_failure: true
+  only:
+    - branch
+
 deploy-prod-docker:
   extends: .deploy-docker-image
   stage: docker-build
