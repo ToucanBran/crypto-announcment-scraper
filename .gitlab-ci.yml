@@ -66,7 +66,7 @@ unit-test:
   services:
     - docker:18.09.7-dind
   before_script:
-    - 'echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USERNAME --password-stdin'
+    - 'echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin'
   script:
     - 'image_name=$REGISTRY$ENV:$CI_COMMIT_SHORT_SHA'
     - 'docker build -t $image_name .'
