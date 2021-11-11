@@ -3,6 +3,7 @@ from logger import logger
 from services import BinanceScraper, CoinService, queue
 from load_config import *
 from services.rabbitmq_wrapper import RabbitMqWrapper
+from services.scraper_logger import setup_logger
 
 def main(configurations):
     scraper = BinanceScraper(CoinService())
@@ -18,6 +19,7 @@ def main(configurations):
 
 if __name__ == '__main__':
     configs = load_config("config.yml")
+    setup_logger()
     rmq = RabbitMqWrapper(configs["queue"])
     channel = None
     try_count = 0
