@@ -62,7 +62,9 @@ unit-test:
 
 
 .deploy-docker-image:
-  image: gitlab/dind
+  image: docker:latest
+  services:
+    - docker:18.09.7-dind
   before_script:
     - 'echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USERNAME --password-stdin'
   script:
