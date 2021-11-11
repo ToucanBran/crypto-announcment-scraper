@@ -76,8 +76,6 @@ deploy-dev-docker:
   rules:
     - when: manual
       allow_failure: true
-  only:
-    - branch
 
 deploy-prod-docker:
   extends: .deploy-docker-image
