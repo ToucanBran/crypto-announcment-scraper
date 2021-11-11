@@ -4,13 +4,13 @@ from services import BinanceScraper, CoinService, queue
 from load_config import *
 from services.rabbitmq_wrapper import RabbitMqWrapper
 
-def main(configs):
+def main(configurations):
     scraper = BinanceScraper(CoinService())
     last_article_id = 0
     new_coins = scraper.get_latest_coins(last_article_id)
     logger.debug(f"New coins: {', '.join(new_coins)}")
     
-    with queue(configs["queue"]) as q:
+    with queue(configurations["queue"]) as q:
         for coin in new_coins:
             logger.info(f"Pushing {coin} to queue")
             q.push(coin)

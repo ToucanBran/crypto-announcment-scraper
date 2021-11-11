@@ -40,7 +40,7 @@ lint-app:
   extends: .python
   stage: lint
   script:
-    - 'find . -type f -not -path "./venv/*" -name "*.py" | xargs pylint'
+    - 'find . -type f -not -path "./venv/*" -name "*.py" | xargs pylint -E'
 
 unit-test:
   extends: .python
@@ -59,6 +59,8 @@ unit-test:
 #     paths:
 #       - "packages/*.tgz"
 
+
+
 .deploy-docker-image:
   tags:
     - docker
@@ -71,14 +73,15 @@ unit-test:
 
 deploy-dev-docker:
   extends: .deploy-docker-image
+  stage: docker-build
   variables:
     REGISTRY: bgomez89/cryptoscraperdev
   rules:
     - when: manual
       allow_failure: true
 
-deploy-prod-docker:
-  extends: .deploy-docker-image
-  stage: docker-build
-  only:
-    - master
+# deploy-prod-docker:
+#   extends: .deploy-docker-image
+#   stage: docker-build
+#   only:
+#     - master
