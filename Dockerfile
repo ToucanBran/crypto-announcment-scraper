@@ -15,8 +15,7 @@ WORKDIR /home/debian/app
 
 COPY --from=builder /app /home/debian/app
 
-COPY services/ services/
-COPY announcement_scraper.py load_config.py logger.py ./
+COPY src/ ./
 
 ENV PATH="/home/debian/app/.venv/bin:$PATH"
 
