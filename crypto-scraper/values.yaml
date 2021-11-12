@@ -14,7 +14,7 @@ queue:
 
 scrapers:
   binance:
-    repository: bgomez89/binance-scraper
+    repository: bgomez89/crypto-scraper
     tag: latest
     schedule: "*/1 * * * *"
     configs:

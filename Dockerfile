@@ -21,4 +21,4 @@ ENV PATH="/home/debian/app/.venv/bin:$PATH"
 
 USER debian
 
-CMD [ "tail", "-f", "/dev/null" ]
+CMD [ "python", "announcement_scraper.py" ]
