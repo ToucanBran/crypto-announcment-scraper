@@ -50,18 +50,6 @@ unit-test:
   script:
     - 'pytest -k _unit'
 
-# package-charts:
-#   extends: .helm
-#   stage: package
-#   before_script:
-#     - 'mkdir packages'
-#   script:
-#     - 'helm package crypto-bot --app-version $CI_COMMIT_SHORT_SHA -d packages'
-#   artifacts:
-#     paths:
-#       - "packages/*.tgz"
-
-
 
 .deploy-docker-image:
   image: docker:latest
