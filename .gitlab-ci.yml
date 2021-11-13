@@ -110,11 +110,9 @@ helm-package:
 deploy-charts-dev:
   extends: .deploy-helm-chart
   stage: deploy
-  needs: ["helm package"]
+  needs: ["helm-package"]
   variables:
     CHANNEL: dev
   rules:
     - when: manual
       allow_failure: true
-
-      
