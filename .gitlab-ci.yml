@@ -26,8 +26,9 @@ stages:
     - source venv/bin/activate
 
 .helm:
-  image: alpine/helm:3.5.2
-  entrypoint: [""] 
+  image: 
+      name: alpine/helm:3.5.2
+      entrypoint: [""]
 
 install-pkgs:
   extends: .python
