@@ -12,7 +12,7 @@ spec:
       template:
         spec:
           containers:
-            - image: "{{ $scraperValues.repository }}:{{ $scraperValues.tag }}"
+            - image: "{{ $scraperValues.repository }}:{{ $scraperValues.tag | default $.Chart.AppVersion}}"
               name: {{ $scraper}}
               imagePullPolicy: IfNotPresent
               env:
