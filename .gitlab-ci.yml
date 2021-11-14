@@ -94,7 +94,7 @@ helm-package:
     GIT_STRATEGY: none
   script:
     - '[ -d "packages" ] && [ "$(ls -A packages)" ] || { echo "No package exist."; exit 1; }'
-    - 'for package in $(find packages -type f -name "*.tgz"); do path=$(pwd)/$package; echo $package; curl --request POST --user git-er-dun:$CI_JOB_TOKEN --form "chart=@${path}" "${CI_API_V4_URL}/projects/crypto/packages/helm/api/${CHANNEL}/charts"; done;'
+    - 'for package in $(find packages -type f -name "*.tgz"); do path=$(pwd)/$package; echo $package; curl --request POST --user git-er-dun:$CI_JOB_TOKEN --form "chart=@${path}" "${CI_API_V4_URL}/groups/14051406/packages/helm/api/${CHANNEL}/charts"; done;'
 
 
 deploy-charts-dev:
@@ -107,9 +107,11 @@ deploy-charts-dev:
     - when: manual
       allow_failure: true
 
-deploy-charts-dev:
+deploy-charts-prod:
   extends: .deploy-helm-chart
   stage: deploy
   needs: ["helm-package"]
   variables:
     CHANNEL: prod
+  only:
+    - master
