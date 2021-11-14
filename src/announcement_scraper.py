@@ -19,7 +19,7 @@ def main(configurations):
 
 if __name__ == '__main__':
     configs = load_config("config.yml")
-    setup_logger()
+    logger = setup_logger()
     rmq = RabbitMqWrapper(configs["queue"])
     channel = None
     try_count = 0
