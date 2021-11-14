@@ -58,7 +58,7 @@ unit-test:
   before_script:
     - 'echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USERNAME --password-stdin'
   script:
-    - 'image_name=$REGISTRY$ENV:$CI_COMMIT_SHORT_SHA'
+    - 'image_name=bgomez89/cryptoscraper$ENV:$CI_COMMIT_SHORT_SHA'
     - 'docker build -t $image_name .'
     - 'docker push $image_name'
 
@@ -66,16 +66,16 @@ deploy-dev-docker:
   extends: .deploy-docker-image
   stage: docker-build
   variables:
-    REGISTRY: bgomez89/cryptoscraperdev
+    ENV: dev
   rules:
     - when: manual
       allow_failure: true
 
-# deploy-prod-docker:
-#   extends: .deploy-docker-image
-#   stage: docker-build
-#   only:
-#     - master
+deploy-prod-docker:
+  extends: .deploy-docker-image
+  stage: docker-build
+  only:
+    - master
 
 helm-package:
   extends: .helm
@@ -106,3 +106,12 @@ deploy-charts-dev:
   rules:
     - when: manual
       allow_failure: true
+
+deploy-charts-prod:
+  extends: .deploy-helm-chart
+  stage: deploy
+  needs: ["helm-package"]
+  variables:
+    CHANNEL: prod
+  only:
+    - master
