@@ -2,7 +2,7 @@ version: 1
 formatters:
   default:
     format: "%(asctime)s %(levelname)s: %(message)s <%(filename)s>"
-    class: services.logger_service.GMTFormatter
+    class: services.scraper_logger.GMTFormatter
 
 handlers:
   console:
@@ -13,3 +13,6 @@ loggers:
   scraper:
     level: DEBUG
     handlers: [console]
+root:
+  level: INFO
+  handlers: []

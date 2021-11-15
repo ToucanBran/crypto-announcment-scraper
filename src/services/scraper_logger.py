@@ -1,18 +1,22 @@
 from io import TextIOWrapper
-import logging, os, pathlib,yaml
+import logging, os, time, yaml, logging.config
 from helpers import is_none_or_whitespace
+
+class GMTFormatter(logging.Formatter):
+    converter = time.gmtime
 
 def read_config(f: TextIOWrapper):
     try:
         configs = yaml.safe_load(f.read())
+        return configs
     except Exception as e:
-        print(e)
         logging.basicConfig(level=logging.INFO)
 
 def setup_logger():
     path = os.path.join(os.path.dirname(__file__), "log_configs.yaml")
     with open(path, 'r') as f:
-        read_config(f)
+        config = read_config(f)
+        logging.config.dictConfig(config)
 
     return get_logger("scraper")
 
